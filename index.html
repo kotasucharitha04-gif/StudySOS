@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>StudySOS – AI Academic Rescue System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="css/styles.css"></head><body>
+<header><span class="logo" onclick="go('home')">🆘 Study<b>SOS</b></span><button id="mt" class="btn s" onclick="document.querySelector('nav').classList.toggle('open')">☰ Menu</button><nav id="nav"></nav><button class="btn s" onclick="tg()" title="Toggle theme">🌓</button></header>
+<main>
+<section id="home">
+<div class="hero"><div><span class="pill">AI for Education</span><h1>StudySOS – Your AI Academic Rescue System</h1><p style="font-size:19px;font-weight:600">From academic overload to a clear, personalized study plan.</p><p class="mu">StudySOS uses AI-powered academic assistance to understand your study situation, prioritize what matters most, and help you prepare smarter when exams are approaching.</p><button class="btn" onclick="go('rescue')">Start Academic Rescue</button><button class="btn s" onclick="document.getElementById('feat').scrollIntoView({behavior:'smooth'})">Explore Features</button> <button class="btn s" onclick="loadDemo()">▶ Load demo student</button></div>
+<svg viewBox="0 0 320 240" role="img" aria-label="Student studying with a rescue plan"><rect width="320" height="240" rx="24" fill="var(--pr2)"/><rect x="40" y="60" width="150" height="110" rx="10" fill="var(--card)" stroke="var(--pr)" stroke-width="3"/><rect x="55" y="78" width="90" height="8" rx="4" fill="var(--pr)"/><rect x="55" y="96" width="120" height="6" rx="3" fill="var(--bd)"/><rect x="55" y="110" width="100" height="6" rx="3" fill="var(--bd)"/><rect x="55" y="130" width="70" height="22" rx="6" fill="var(--ok)"/><circle cx="250" cy="90" r="26" fill="#f2b47e"/><path d="M222 82q28-34 56 0z" fill="#14213d"/><rect x="224" y="118" width="52" height="70" rx="16" fill="var(--pr)"/><circle cx="270" cy="40" r="18" fill="var(--bad)"/><text x="270" y="47" text-anchor="middle" font-size="20" fill="#fff" font-weight="800">SOS</text><text x="40" y="210" font-size="14" fill="var(--tx)" font-weight="700">Chaos → Plan → Confidence</text></svg></div>
+<h2>Feeling academically stuck?</h2><div class="grid" id="probs"></div>
+<div class="hl">StudySOS turns academic chaos into an actionable rescue plan.</div>
+<h2 id="feat">Everything you need to catch up</h2><div class="grid" id="feats"></div>
+<div class="card" style="margin-top:22px;border:2px solid var(--pr)"><b style="font-size:19px">“StudySOS doesn't just answer academic questions. It understands the student's academic situation and creates an actionable rescue strategy.”</b></div>
+<div class="card" style="margin-top:14px"><h3>🎬 2–3 minute demo flow</h3><p class="mu">1 Load demo student → 2 Generate rescue plan → 3 Ask a doubt → 4 Generate notes → 5 Take quiz → 6 View dashboard &amp; readiness.</p><button class="btn" onclick="loadDemo();go('rescue');subm()">Run demo: generate rescue plan</button></div>
+</section>
+
+<section id="rescue"><h2>AI Academic Rescue</h2><p class="mu">Tell us your situation. We'll build a plan that fits <i>you</i>.</p>
+<div class="card"><form onsubmit="return false" id="rf">
+<div class="row"><div><label>Student name</label><input id="r_name"></div><div><label>Course / degree</label><input id="r_course"></div><div><label>Year</label><select id="r_year"><option>1</option><option>2</option><option>3</option><option>4</option></select></div></div>
+<label>Subject names (comma-separated; number of subjects is counted automatically)</label><input id="r_subs" placeholder="Data Structures, Mathematics, DBMS, Operating Systems">
+<div class="row"><div><label>Exam date</label><input type="date" id="r_date"></div><div><label>Current preparation level</label><select id="r_prep"><option>Beginner</option><option selected>Moderate</option><option>Good</option></select></div><div><label>Syllabus completed (%)</label><input type="number" id="r_pct" min="0" max="100"></div><div><label>Study hours per day</label><input type="number" id="r_hrs" min="0.5" max="16" step="0.5"></div></div>
+<div class="row"><div><label>Difficult / weak subjects</label><input id="r_weak"></div><div><label>Strong subjects</label><input id="r_strong"></div><div><label>Preferred study method</label><select id="r_meth"><option>Reading notes</option><option>Practice problems</option><option>Video lectures</option><option>Flashcards / quizzes</option></select></div></div>
+<label>Main academic problems</label><div id="r_probs"></div><label>Anything else? (main problem in your words)</label><textarea id="r_txt" rows="2"></textarea>
+<div id="r_err" class="err"></div><button class="btn" onclick="subm()">Analyze &amp; Create Rescue Plan</button> <button class="btn s" onclick="loadDemo()">Fill demo data</button> <button class="btn d" onclick="go('emergency')">🚨 Emergency Mode</button></form></div>
+<div id="r_out"></div></section>
+
+<section id="emergency"><h2>🚨 Academic Emergency Mode</h2><p class="mu">Exam tomorrow-ish? Get a compressed plan in seconds.</p>
+<div class="card"><div class="row"><div><label>Days left for the exam</label><input type="number" id="e_d" min="1" max="30"></div><div><label>Subjects remaining</label><input type="number" id="e_s" min="1" max="10"></div><div><label>Syllabus incomplete (%)</label><input type="number" id="e_p" min="1" max="100"></div><div><label>Hours per day</label><input type="number" id="e_h" min="1" max="16"></div></div><div id="e_err" class="err"></div><button class="btn d" onclick="emerg()">Activate Emergency Plan</button></div><div id="e_out"></div></section>
+
+<section id="planner"><h2>Smart Study Planner</h2><div id="pl_sum" class="grid"></div>
+<div class="card" style="margin-top:14px"><h3>Add a task</h3><div class="row"><div><label>Subject</label><input id="p_s"></div><div><label>Topic</label><input id="p_t"></div><div><label>Hours</label><input type="number" id="p_h" value="1" step="0.5" min="0.5"></div><div><label>Day (0 = today)</label><input type="number" id="p_d" value="0" min="0" max="60"></div><div><label>Priority</label><select id="p_p"><option>High</option><option selected>Medium</option><option>Low</option></select></div></div><div id="p_err" class="err"></div><button class="btn" onclick="addT()">Add task</button><button class="btn s" onclick="setGoal()">Set daily goal</button></div>
+<div id="pl_list"></div></section>
+
+<section id="doubt"><h2>AI Doubt Solver</h2><div class="card"><div class="row"><div><label>Subject</label><select id="d_s"></select></div><div><label>Topic</label><input id="d_t" placeholder="e.g. Binary Trees"></div><div><label>Difficulty</label><select id="d_l"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div></div><label>Your question</label><textarea id="d_q" rows="3" placeholder="Why is the height of a balanced BST O(log n)?"></textarea><div id="d_err" class="err"></div><button class="btn" onclick="solve('normal')">Solve my doubt</button></div><div id="d_out"></div></section>
+
+<section id="notes"><h2>AI Notes Generator</h2><div class="card"><div class="row"><div><label>Topic</label><input id="n_t" placeholder="Normalization"></div><div><label>Subject</label><input id="n_s" placeholder="DBMS"></div><div><label>Style</label><select id="n_m"><option>Quick Revision</option><option>Detailed Notes</option><option selected>Exam-Oriented Notes</option></select></div><div><label>Difficulty</label><select id="n_d"><option>Basic</option><option selected>Intermediate</option><option>Advanced</option></select></div></div><div id="n_err" class="err"></div><button class="btn" onclick="notes()">Generate notes</button></div><div id="n_out"></div></section>
+
+<section id="quiz"><h2>AI Quiz Generator</h2><div class="card"><div class="row"><div><label>Subject</label><select id="q_s"></select></div><div><label>Number of questions</label><select id="q_n"><option>3</option><option selected>5</option><option>8</option></select></div><div><label>Difficulty</label><select id="q_d"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div></div><div id="q_err" class="err"></div><button class="btn" onclick="mkQuiz()">Start quiz</button></div><div id="q_out"></div></section>
+
+<section id="readiness"><h2>Exam Readiness</h2><div id="rd"></div></section>
+<section id="dashboard"><h2>Progress Dashboard</h2><span class="demo" id="dm">DEMO / SAMPLE DATA</span><div id="db" style="margin-top:12px"></div></section>
+
+<section id="resources"><h2>Resources</h2><p class="mu">Curated study aids. Links marked ↗ open external sites.</p><div class="grid" id="resg"></div></section>
+
+<section id="profile"><h2>Student Profile</h2><div class="card"><div class="row"><div><label>Name</label><input id="f_name"></div><div><label>Course</label><input id="f_course"></div><div><label>Year</label><input id="f_year"></div><div><label>Preparation level</label><input id="f_prep"></div></div><label>Subjects</label><input id="f_subs"><label>Academic goals</label><input id="f_goal"><label>Study preferences</label><input id="f_pref"><div id="f_msg" class="mu"></div><button class="btn" onclick="saveProf()">Save profile</button></div></section>
+
+<section id="about"><h2>About StudySOS</h2><div class="grid"><div class="card"><h3>Problem</h3>Students often struggle to manage large syllabi, limited time, difficult subjects, and exam pressure.</div><div class="card"><h3>Solution</h3>StudySOS acts as an AI academic rescue system that analyzes a student's situation and provides personalized study support.</div><div class="card"><h3>Impact</h3>It helps students prioritize, plan, understand, practice, and track their preparation.</div></div>
+<div class="card" style="margin-top:14px"><b>How the AI works:</b> doubts, notes and quizzes are generated by a backend service that holds the model API key; no keys are ever placed in frontend code. If the AI service is unavailable, StudySOS falls back to built-in offline answers so studying is never blocked.</div></section>
+
+<section id="contact"><h2>Contact / Feedback</h2><div class="card"><div class="row"><div><label>Your name</label><input id="c_n"></div><div><label>Email</label><input id="c_e" type="email"></div></div><label>Message</label><textarea id="c_m" rows="4"></textarea><div id="c_err" class="err"></div><button class="btn" onclick="contact()">Send feedback</button></div></section>
+</main>
+<footer><b>StudySOS – AI Academic Rescue System</b><br>Turning academic overload into an actionable plan.<br><a onclick="go('home')">Home</a><a onclick="go('home');setTimeout(()=>document.getElementById('feat').scrollIntoView(),50)">Features</a><a onclick="go('about')">About</a><a onclick="go('contact')">Contact</a><a onclick="alert('Your study data is saved in the StudySOS database under an anonymous ID stored in this browser. No account or login is used.')">Privacy</a><br><small>Built for an AI for Education Hackathon</small></footer>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script></body></html>
